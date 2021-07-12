@@ -21,5 +21,26 @@ object SNiceStrings {
 //    dvszwmarrgswjxmb is naughty because it contains only one vowel.
 //    How many strings are nice?
 
-  def nice(xs: List[String]): Int = ???
+  def nice(xs: List[String]): Int =
+    xs.count(s => three_vowels(s) && duplicate_letters(s) && !disallowed_strings(s))
+
+  def three_vowels(s: String): Boolean = {
+    val vowels = Set[Char]('a', 'e', 'i', 'o', 'u')
+    s.filter(vowels.contains).length >= 3
+  }
+
+  def duplicate_letters(s: String): Boolean = {
+    val whole = s.toCharArray
+    val tail = s.tail.toCharArray
+    val zipped = whole.zip(tail)
+    zipped.exists( pair => pair._1 == pair._2)
+  }
+
+  def disallowed_strings(s: String): Boolean = {
+    s.contains("ab") ||
+    s.contains("cd") ||
+    s.contains("pq") ||
+    s.contains("xy")
+  }
+
 }

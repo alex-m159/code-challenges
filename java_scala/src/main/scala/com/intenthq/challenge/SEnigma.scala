@@ -22,6 +22,61 @@ object SEnigma {
   // Following the above rules, the message would be: “1N73N7 HQ”
   // Check the tests for some other (simpler) examples.
 
-  def deciphe(map: Map[Int, Char])(message: List[Int]): String = ???
+  def deciphe(map: Map[Int, Char])(message: List[Int]): String = {
+    iterativeApproach(map)(message)
+  }
 
+  def iterativeApproach(map: Map[Int, Char])(message: List[Int]): String = {
+    val keys = map.keySet
+    val output = StringBuilder.newBuilder
+    var i = 0
+    while(i < message.length){
+      val (mapped, len) =
+        keys
+          .toSeq
+          .sorted
+          .foldLeft(
+            (message(i).toString, 1)
+          ) { (res, k) =>
+              val slice = message.slice(i, i+digits(k)).mkString
+              if(slice == k.toString)
+                (map(k).toString, digits(k))
+              else
+                res
+            }
+      output.append(mapped)
+      i += len
+    }
+    output.mkString
+  }
+
+  def tailRecursiveApproach(map: Map[Int, Char])(message: List[Int]): String = {
+    recurse(map, message, 0, "")
+  }
+
+  @scala.annotation.tailrec
+  def recurse(map: Map[Int, Char], message: List[Int], i: Int, acc: String): String = {
+    val keys = map.keySet
+    if(i < message.length){
+      val (mapped, len) =
+        keys
+          .toSeq
+          .sorted
+          .foldLeft(
+            (message(i).toString, 1)
+          ) { (res, k) =>
+              val slice = message.slice(i, i+digits(k)).mkString
+              if(slice == k.toString)
+                (map(k).toString, digits(k))
+              else
+                res
+            }
+      recurse(map, message, i + len, acc.concat(mapped))
+    }
+    else
+      acc
+  }
+
+  def digits(n: Int): Int =
+    n.toString.length
 }

@@ -3,7 +3,8 @@ package com.intenthq.challenge
 import java.util
 
 import org.specs2.mutable.Specification
-
+/* Commented out to reduce noise during tests */
+/*
 class JNiceStringsSpec extends Specification {
 
   section("java")
@@ -28,3 +29,4 @@ class JNiceStringsSpec extends Specification {
   section("nice")
   section("java")
 }
+*/
